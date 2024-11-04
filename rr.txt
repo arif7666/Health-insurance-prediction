@@ -1,0 +1,67 @@
+# Library Input
+library(dplyr)
+library(GGally)
+library(ggcorrplot)
+library(MLmetrics)
+library(performance)
+library(ggplot2)
+library(lmtest)
+library(car)
+library(RColorBrewer)
+library(DT)
+
+
+# data preparation
+
+# data Input
+ins <- read.csv("C:/Users/User/Desktop/archive/insurance.csv")
+
+# view content of datasets
+View(ins)
+
+# read the heading of the data
+head(ins)
+
+# Data Coercion
+ins[ , c("sex", "smoker", "region")] <- 
+  lapply(ins[ , c("sex", "smoker", "region")], as.factor)
+
+str(ins)
+
+# summary of charges
+summary(ins$charges)
+
+# visualize using histogram
+hist(ins$charges)
+
+# distribution of the data
+table(ins$sex)
+table(ins$smoker)
+table(ins$children)
+
+
+# To find any missing values
+colSums(is.na(ins))
+
+
+# Exploratory data analysis
+
+# correlation matrix
+cor(ins[c("age","bmi","children","charges")])
+
+# scatterplot matrix
+pairs(ins[c("age","bmi","children","charges")])
+
+# Correlation
+model.matrix(~0+., data=ins) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag = F, type="lower", lab=TRUE, lab_size=2, 
+             colors = c("#1B9E77", "white", "#D95F02")) 
+
+
+
+install.packages("magrittr")
+library(magrittr)
+
+install.packages("ggcorrplot")
+library(ggcorrplot)
